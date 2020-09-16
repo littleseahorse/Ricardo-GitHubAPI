@@ -1,15 +1,12 @@
-var React = require("react");
+import React from "react";
+import PropTypes from "prop-types";
 
-var GithubRepo = React.createClass({
-  propTypes: {
-    repo: React.PropTypes.shape({
-      stargazers_count: React.PropTypes.number.isRequired,
-      html_url: React.PropTypes.string.isRequired,
-      full_name: React.PropTypes.string.isRequired,
-    }),
-  },
+class GithubRepo extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
-  render: function () {
+  render() {
     var url = this.props.repo.html_url;
     var name = this.props.repo.full_name;
     var stars = this.props.repo.stargazers_count;
@@ -20,7 +17,15 @@ var GithubRepo = React.createClass({
         <span className="github-repotag__stars">{stars} ★</span>
       </a>
     );
-  },
-});
+  }
+}
 
-module.exports = GithubRepo;
+GithubRepo.propTypes = {
+  repo: PropTypes.shape({
+    stargazers_count: PropTypes.number.isRequired,
+    html_url: PropTypes.string.isRequired,
+    full_name: PropTypes.string.isRequired,
+  }),
+};
+
+export default GithubRepo;

@@ -1,32 +1,31 @@
-var React = require("react");
-var $ = require("jquery"); // Using jQuery to make AJAX calls
-var Link = require("react-router").Link;
+import React from "react";
+import $ from "jquery"; // Using jQuery to make AJAX calls
+import { Link } from "react-router";
+import PropTypes from "prop-types";
 
-var User = React.createClass({
-  propTypes: {
-    // PropTypes.shape is like PropTypes.object but lets to define what's expected to be inside the object
-    params: React.PropTypes.shape({
-      username: React.PropTypes.string.isRequired,
-    }),
-  },
+class User extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
-  getInitialState: function () {
+  getInitialState() {
     return {};
-  },
+  }
 
   /*
     This method will be called by React after the first render. Here data is loaded with AJAX.
     This component gets mounted in the DOM as soon as the URL is /user/:username.
   */
-  componentDidMount: function () {
+  componentDidMount() {
     this.fetchData();
-  },
+  }
 
-  componentDidUpdate: function (prevProps) {
+  componentDidUpdate(prevProps) {
     if (prevProps.params.username !== this.props.params.username) {
       this.fetchData();
     }
-  },
+  }
 
   /*
     When fetchData gets called, react-router will pass a `params` prop containing every parameter in the URL.
@@ -37,7 +36,7 @@ var User = React.createClass({
     the data -- in the callback -- we call `setState` to put the user data in our state. This will trigger a re-render.
     When `render` gets called again, `this.state.user` exists and we get the user info display instead of "LOADING..."
   */
-  fetchData: function () {
+  fetchData() {
     var that = this;
 
     $.getJSON(
@@ -47,12 +46,12 @@ var User = React.createClass({
         user: user,
       });
     });
-  },
+  }
 
   /*
     This method is used as a mapping function.
   */
-  renderStat: function (stat) {
+  renderStat(stat) {
     return (
       <li key={stat.name} className="user-info__stat">
         <Link to={stat.url}>
@@ -61,9 +60,9 @@ var User = React.createClass({
         </Link>
       </li>
     );
-  },
+  }
 
-  render: function () {
+  render() {
     // If the state doesn't have a user key, it means the AJAX didn't complete yet. Simply render a "LOADING..." indicator.
     if (!this.state.user) {
       return <div className="user-page">LOADING...</div>;
@@ -97,7 +96,14 @@ var User = React.createClass({
         <div className="user-extra">{this.props.children}</div>
       </div>
     );
-  },
-});
+  }
+}
 
-module.exports = User;
+User.propTypes = {
+  // PropTypes.shape is like PropTypes.object but lets to define what's expected to be inside the object
+  params: PropTypes.shape({
+    username: PropTypes.string.isRequired,
+  }),
+};
+
+export default User;

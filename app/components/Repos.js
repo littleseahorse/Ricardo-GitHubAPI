@@ -1,19 +1,18 @@
-var React = require("react");
-var $ = require("jquery"); // Using jQuery to make AJAX calls
+import React from "react";
+import $ from "jquery"; // Using jQuery to make AJAX calls
+import PropTypes from "prop-types";
 
-var GithubRepo = require("./GithubRepo");
+import GithubRepo from "./GithubRepo";
 
-var Repos = React.createClass({
-  propTypes: {
-    // PropTypes.shape is like PropTypes.object but lets to define what's expected to be inside the object
-    params: React.PropTypes.shape({
-      username: React.PropTypes.string.isRequired,
-    }),
-  },
+class Repos extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
-  getInitialState: function () {
+  getInitialState() {
     return {};
-  },
+  }
 
   /*
     This method will be called by React after the first render. Here data is loaded with AJAX.
@@ -27,7 +26,7 @@ var Repos = React.createClass({
     the data -- in the callback -- we call `setState` to put the user data in our state. This will trigger a re-render.
     When `render` gets called again, `this.state.repos` exists and we get the user info display instead of "LOADING..."
   */
-  componentDidMount: function () {
+  componentDidMount() {
     var that = this;
 
     $.getJSON(
@@ -37,9 +36,9 @@ var Repos = React.createClass({
         repos: repos,
       });
     });
-  },
+  }
 
-  render: function () {
+  render() {
     // If the state doesn't have a repos key, it means the AJAX didn't complete yet. Simply render a "LOADING..." indicator.
     if (!this.state.repos) {
       return <div className="repos-page">LOADING...</div>;
@@ -59,7 +58,14 @@ var Repos = React.createClass({
         </ul>
       </div>
     );
-  },
-});
+  }
+}
 
-module.exports = Repos;
+Repos.propTypes = {
+  // PropTypes.shape is like PropTypes.object but lets to define what's expected to be inside the object
+  params: PropTypes.shape({
+    username: PropTypes.string.isRequired,
+  }),
+};
+
+export default Repos;

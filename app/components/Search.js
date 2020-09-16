@@ -1,5 +1,5 @@
-var React = require("react");
-var history = require("react-router").browserHistory;
+import React from "react";
+import { browserHistory as history } from "react-router";
 
 /*
 This component displays a form where the user can enter a GitHub username
@@ -8,13 +8,19 @@ we will use react-router's history.push function to push a new URL to the histor
 
 This will have as an effect to navigate to a new URL, which will display the <User/> component
 */
-var Search = React.createClass({
-  _handleSubmit: function (e) {
+class Search extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this._handleSubmit = this._handleSubmit.bind(this);
+  }
+
+  _handleSubmit(e) {
     e.preventDefault();
     history.push(`/user/${this.refs.userInput.value}`);
-  },
+  }
 
-  render: function () {
+  render() {
     return (
       <div className="search-page">
         <h2>Enter a GitHub username</h2>
@@ -34,7 +40,7 @@ var Search = React.createClass({
         </form>
       </div>
     );
-  },
-});
+  }
+}
 
-module.exports = Search;
+export default Search;
